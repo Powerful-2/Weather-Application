@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Frontend Mentor | Weather app</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
+
+  <link rel="stylesheet" href="weather.css">
+
+  <!-- Primary SEO Metadata -->
+  <meta name="description" content="Get accurate real-time weather forecasts, hourly climate breakdowns, wind speed trackers, and an extended 7-day outlook for any city globally.">
+  <meta name="keywords" content="weather app, local weather forecast, temperature radar, meteorology data, 7 day forecast, precipitation tracker">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://yourdomain.com">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yourdomain.com">
+  <meta property="og:title" content="Real-Time Local Weather Forecast Dashboard">
+  <meta property="og:description" content="Track live weather updates, atmospheric pressure, wind speeds, and precipitation trends anywhere in the world.">
+  <meta property="og:image" content="https://yourdomain.com">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://yourdomain.com">
+  <meta name="twitter:title" content="Real-Time Local Weather Forecast Dashboard">
+  <meta name="twitter:description" content="Check accurate rain charts, daily climate maps, and instant temperature changes dynamically on any device.">
+  <meta name="twitter:image" content="https://yourdomain.com">
+
+  
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "SkyWatch Weather Dashboard",
+      "url": "https://yourdomain.com",
+      "description": "An interactive digital weather dashboard reporting atmospheric metrics, temperature switches, and 7-day climate timelines using the Open-Meteo API.",
+      "applicationCategory": "WeatherApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0.00",
+        "priceCurrency": "USD"
+      }
+    }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+
+  <style>
+    .attribution {
+      font-size: 0.6875rem;
+      text-align: center;
+    }
+
+    .attribution a {
+      color: hsl(228, 45%, 44%);
+    }
+  </style>
+</head>
+
+<body class="remall_body">
+  <div class="container">
+    
+    <header class="header">
+      <div class="logo">
+        <img src="./assets/images/logo.svg" alt="Weather Now Logo" aria-hidden="true">
+        
+        <!-- <span>Weather Now</span> -->
+
+        <!-- <div class="group-1">
+          <div class="vector-shape"></div> 
+        </div> -->
+      </div>
+      <button class="units-btn" aria-label="Change metrics settings system">
+        <span>Units</span>
+        <img src="./assets/images/icon-units.svg" class="units-icon" alt="">
+        <svg xmlns="http://w3.org" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </button>
+    </header>
+
+    <main id="main-content">
+      <h1>How's the sky looking today?</h1>
+
+      <form class="search-container" role="search" onsubmit="event.preventDefault();">
+        <div class="input-field-wrapper">
+          <img src="./assets/images/icon-search.svg" class="search-icon" alt="" aria-hidden="true">
+          <input type="text" id="citySearch" name="city" placeholder="Search for a place...">
+        </div>
+        <button type="submit">Search</button>
+      </form>
+
+      <section class="weather-info-card">
+        <div class="location-info">
+          <h2>Berlin, Germany</h2>
+          <p>Tuesday, Aug 5, 2025</p>
+        </div>
+        <div class="temperature-container">
+          <img src="./assets/images/icon-sunny.webp" alt="">
+          <span class="temperature">20°</span>
+        </div>
+      </section>
+
+      <!-- Weather Details -->
+      <section class="weather-details">
+        <div class="detail-card">
+          <span class="detail-label">Feels Like</span>
+          <span class="detail-value">18°</span>
+        </div>
+        <div class="detail-card">
+          <span class="detail-label">Humidity</span>
+          <span class="detail-value">46%</span>
+        </div>
+        <div class="detail-card">
+          <span class="detail-label">Wind</span>
+          <span class="detail-value">14 km/h</span>
+        </div>
+        <div class="detail-card">
+          <span class="detail-label">Precipitation</span>
+          <span class="detail-value">0 mm</span>
+        </div>
+      </section>
+      
+      <!-- Daily Forecast -->
+      <section class="daily-forecast">
+        <h2>Daily forecast</h2>
+        <div class="daily-grid">
+          <div class="day-card">
+            <span>Tue</span>
+            <img src="./assets/images/icon-rain.webp" alt="Rain">
+            <div class="temp-range">
+              <span>20°</span> <!-- Max Temp (Order 0) -->
+              <span>14°</span> <!-- Min Temp (Order 1) -->
+            </div>
+          </div>
+          <div class="day-card">
+            <span>Wed</span>
+            <img src="./assets/images/icon-drizzle.webp" alt="Drizzle">
+            <div class="temp-range">
+              <span>21°</span>
+              <span>15°</span>
+            </div>
+          </div>
+          <div class="day-card">
+            <span>Thu</span>
+            <img src="./assets/images/icon-sunny.webp" alt="Sunny">
+            <div class="temp-range">
+              <span>24°</span>
+              <span>14°</span>
+            </div>
+          </div>
+          <div class="day-card">
+            <span>Fri</span>
+            <img src="./assets/images/icon-partly-cloudy.webp" alt="Partly Cloudy">
+            <div class="temp-range">
+              <span>25°</span>
+              <span>13°</span>
+            </div>
+          </div>
+          <div class="day-card">
+            <span>Sat</span>
+            <img src="./assets/images/icon-storm.webp" alt="Thunderstorms">
+            <div class="temp-range">
+              <span>21°</span>
+              <span>15°</span>
+            </div>
+          </div>
+          <div class="day-card">
+            <span>Sun</span>
+            <img src="./assets/images/icon-snow.webp" alt="Snow">
+            <div class="temp-range">
+              <span>25°</span>
+              <span>16°</span>
+            </div>
+          </div>
+          <div class="day-card">
+            <span>Mon</span>
+            <img src="./assets/images/icon-fog.webp" alt="Fog">
+            <div class="temp-range">
+              <span>24°</span>
+              <span>15°</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Hourly Forecast -->
+      <section class="hourly-forecast">
+        <div class="hourly-header">
+          <h2>Hourly forecast</h2>
+
+          <select id="daySelector" aria-label="Select forecast day">
+            <option value="0" selected>Today ▾</option>
+            <option value="1">Tomorrow</option>
+            <option value="2">Third Day</option>
+            <option value="3">Fourth Day</option>
+            <option value="4">Fifth Day</option>
+            <option value="5">Sixth Day</option>
+            <option value="6">Seventh Day</option>
+          </select>
+          <!-- <button>Tuesday ▾</button> -->
+        </div>
+      
+        <!-- 🚀 THE WRAPPER FIX: Group all 8 cards together right here -->
+        <div class="hourly-cards-slider">
+          <div class="hourly-card">
+            <img src="./assets/images/icon-overcast.webp" alt="Overcast">
+            <span>3 PM</span>
+            <span>20°</span>
+          </div>
+          <div class="hourly-card">
+            <img src="./assets/images/icon-partly-cloudy.webp" alt="Partly Cloudy">
+            <span>4 PM</span>
+            <span>20°</span>
+          </div>
+          <div class="hourly-card">
+            <img src="./assets/images/icon-sunny.webp" alt="Sunny">
+            <span>5 PM</span>
+            <span>20°</span>
+          </div>
+          <div class="hourly-card">
+            <img src="./assets/images/icon-overcast.webp" alt="Overcast">
+            <span>6 PM</span>
+            <span>18°</span>
+          </div>
+          <div class="hourly-card">
+            <img src="./assets/images/icon-snow.webp" alt="Snow">
+            <span>7 PM</span>
+            <span>18°</span>
+          </div>
+          <div class="hourly-card">
+            <img src="./assets/images/icon-fog.webp" alt="Fog">
+            <span>8 PM</span>
+            <span>18°</span>
+          </div>
+          <div class="hourly-card">
+            <img src="./assets/images/icon-snow.webp" alt="Snow">
+            <span>9 PM</span>
+            <span>17°</span>
+          </div>
+          <div class="hourly-card">
+            <img src="./assets/images/icon-overcast.webp" alt="Overcast">
+            <span>10 PM</span>
+            <span>17°</span>
+          </div>
+        </div>
+        <div class="hourly-list-wrapper"></div>
+      </section>
+      
+    </main>
+    <footer class="attribution">
+      Challenge by <a href="https://www.frontendmentor.io?ref=challenge">Frontend Mentor</a>.
+      Coded by <a href="#">Prince Chinonso</a>.
+    </footer>
+  </div>
+
+  <!-- <footer class="attribution">
+    Challenge by <a href="https://www.frontendmentor.io?ref=challenge">Frontend Mentor</a>. 
+    Coded by <a href="#">Prince Chinonso</a>.
+  </footer> -->
+</body>
+
+<script src="weather.js" defer></script>
+</html>
