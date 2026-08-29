@@ -1,18 +1,19 @@
 # Mobile Weather Dashboard
 
-A beautiful, responsive mobile weather application built using professional Figma design specifications and powered by real-time climate data from the Open-Meteo API.
----
+## A beautiful, responsive mobile weather application built using professional Figma design specifications and powered by real-time climate data from the Open-Meteo API.
 
 Features Built (Mobile View)
-* Live Search Bar: Translates text city inputs into exact map coordinates instantly.
-* Dynamic 7-Day Outlook Grid: Automatically updates upcoming weekdays and weather metrics.
-* 6-Hour Interactive Timeline: Updates layout rows based on your current local hour line.
-* Smart Icon Selection: Automatically matches server weather condition codes to matching image folder assets.
-* Cache Memory Management: Downloads a weekly data bundle all at once so switching dropdown filters updates the screen instantly without reloading.
+
+- Live Search Bar: Translates text city inputs into exact map coordinates instantly.
+- Dynamic 7-Day Outlook Grid: Automatically updates upcoming weekdays and weather metrics.
+- 6-Hour Interactive Timeline: Updates layout rows based on your current local hour line.
+- Smart Icon Selection: Automatically matches server weather condition codes to matching image folder assets.
+- Cache Memory Management: Downloads a weekly data bundle all at once so switching dropdown filters updates the screen instantly without reloading.
 
 ---
 
 ## Challenges Overcome
+
 1. Frozen Data Placeholders(Boilerplate Nodes): Cleared out hardcoded Frontend Mentor starter rows (`20, 20, 20, 18, 18, 18`) and forced the browser to rebuild layout rows dynamically.
 2. Duplicate Variable Crashes: Sandboxed the engine script inside a private IIFE function loop to stop live reloading tools from crashing the `searchForm` declaration.
 3. Missing NodeList Grids: Fixed an index bug (`detailValues`) by assigning values to ordered array boxes `[0]` through `[3]` individually instead of breaking the entire array text node list.
@@ -20,136 +21,113 @@ Features Built (Mobile View)
 ---
 
 ## Tech Stack Used
-* HTML5: Structured semantic landmarks and flexible container elements.
-* CSS3: Flexbox layouts, dynamic grid equations, custom dropdown styles, and theme color profiles.
-* JavaScript (ES6+): Asynchronous Fetch API loops, JSON data mapping, and localized event handling.
+
+- HTML5: Structured semantic landmarks and flexible container elements.
+- CSS3: Flexbox layouts, dynamic grid equations, custom dropdown styles, and theme color profiles.
+- JavaScript (ES6+): Asynchronous Fetch API loops, JSON data mapping, and localized event handling.
+
 ---
 
 ## How to Run the Project Locally
+
 1. Clone this repository to your machine.
 2. Open the project folder using VS Code.
 3. Right-click on your `weather.html` file and click `Open with Live Server`.
 4. Type any major city (like Surulere, Lagos, or London) into the search bar and press Enter.
-
 
 ## How the App Uses the Open-Meteo APIs
 
 Instead of trying to find weather data directly from a plain text city name (which computers cannot do), this application splits the workflow into two intelligent server pipelines:
 
 ### 1. Open-Meteo Geocoding API
-*   **What it does**: It acts as a digital map translator [INDEX]. 
-*   **How the app uses it**: The moment you type a city name (like "Surulere") and hit search, this API takes that text string and translates it into an exact geographical coordinate pair—Latitude and Longitude. It also returns the formatted name and country to clean up the headline display.
-*  The Live Endpoint Path: 
-    ```text
-    https://open-meteo.com
-    ```
+
+- **What it does**: It acts as a digital map translator [INDEX].
+- **How the app uses it**: The moment you type a city name (like "Surulere") and hit search, this API takes that text string and translates it into an exact geographical coordinate pair—Latitude and Longitude. It also returns the formatted name and country to clean up the headline display.
+- The Live Endpoint Path:
+  ```text
+  https://open-meteo.com
+  ```
 
 ### 2. Open-Meteo Forecast API
-*  What it does: It acts as the core meteorological database engine.
-*  How the app uses it: The script immediately feeds the newly calculated Latitude and Longitude coordinates straight into this second API. The forecast server reads those coordinates and returns a massive synchronized payload bundle containing current telemetry, a 7-day daily outlook, and a 168-hour timeline array.
-* The Live Endpoint Path:
-    ```text
-    https://open-meteo.com
-    ```
+
+- What it does: It acts as the core meteorological database engine.
+- How the app uses it: The script immediately feeds the newly calculated Latitude and Longitude coordinates straight into this second API. The forecast server reads those coordinates and returns a massive synchronized payload bundle containing current telemetry, a 7-day daily outlook, and a 168-hour timeline array.
+- The Live Endpoint Path:
+  ```text
+  https://open-meteo.com
+  ```
 
 ---
 
 ## Problems Encountered & Practical Solutions
 
 ### 1. The Broken NodeList Text Glitch
-* The Problem: The app grid values froze because we tried to apply a single text value directly to a collection list (`detailValues.textContent = ...`). The browser did not know which individual card to update.
-* The Practical Solution: We targeted each grid box index number explicitly using array bracket notation (``, ``, ``, ``) [INDEX].
-* Code Example:
-    *javascript *//
-    // ❌ BROKEN APPROACH
-    detailValues.textContent = `${Math.round(cur.apparent_temperature)}°`;
 
-    // FIXED SOLUTION
-    detailValues[0].textContent = `${Math.round(cur.apparent_temperature)}°`; // Card 1: Feels Like
-    detailValues[1].textContent = `${Math.round(cur.relative_humidity_2m)}%`;  // Card 2: Humidity
-    detailValues[2].textContent = `${Math.round(cur.wind_speed_10m)} km/h`;   // Card 3: Wind Speed
-    detailValues[3].textContent = `${cur.precipitation} mm`;                // Card 4: Precipitation
-    ```
+- The Problem: The app grid values froze because we tried to apply a single text value directly to a collection list (`detailValues.textContent = ...`). The browser did not know which individual card to update.
+- The Practical Solution: We targeted each grid box index number explicitly using array bracket notation (`, `, `, `) [INDEX].
+- Code Example:
+  _javascript _//
+  // ❌ BROKEN APPROACH
+  detailValues.textContent = `${Math.round(cur.apparent_temperature)}°`;
+
+  // FIXED SOLUTION
+  detailValues[0].textContent = `${Math.round(cur.apparent_temperature)}°`; // Card 1: Feels Like
+  detailValues[1].textContent = `${Math.round(cur.relative_humidity_2m)}%`; // Card 2: Humidity
+  detailValues[2].textContent = `${Math.round(cur.wind_speed_10m)} km/h`; // Card 3: Wind Speed
+  detailValues[3].textContent = `${cur.precipitation} mm`; // Card 4: Precipitation
+
+  ```
+
+  ```
 
 ### 2. Live Reload Variable Redeclaration Crash
-* The Problem: VS Code Live Server extension tool updates forced the browser to re-read the script file twice, causing a fatal crash: `Uncaught SyntaxError: Identifier 'searchForm' has already been declared`.
-* The Practical Solution: We wrapped all logic inside an IIFE Immediately Invoked Function Expression to sandbox variables away from global browser conflict zones and added a `defer` loading attribute to the HTML script tag.
-* //Code Example//:
-    ```javascript
-    // FIXED SOLUTION: Sandbox Scope Isolation
-    (function () {
-      'use strict';
-      const searchForm = document.querySelector('.search-container');
-      // All logic sits safely in here and can never collide!
-    })();
-    ```
+
+- The Problem: VS Code Live Server extension tool updates forced the browser to re-read the script file twice, causing a fatal crash: `Uncaught SyntaxError: Identifier 'searchForm' has already been declared`.
+- The Practical Solution: We wrapped all logic inside an IIFE Immediately Invoked Function Expression to sandbox variables away from global browser conflict zones and added a `defer` loading attribute to the HTML script tag.
+- //Code Example//:
+  ```javascript
+  // FIXED SOLUTION: Sandbox Scope Isolation
+  (function () {
+    "use strict";
+    const searchForm = document.querySelector(".search-container");
+    // All logic sits safely in here and can never collide!
+  })();
+  ```
 
 ### 3. Missing Dropdown Synchronous Memory Scope
-* The Problem: Clicking the dropdown hours after a search failed to change the hourly row data because the initial API function's internal variable tracker (`weatherData`) vanished from memory after finishing.
-* The Practical Solution: We built a global runtime pointer variable (`let globalWeatherData = null;`) that acts as an in-memory cache backpack [INDEX, INDEX].
-* Code Example:
-    ```javascript
-    // ✅ FIXED SOLUTION: Persistent Memory Loop
-    let globalWeatherData = null; // Shared memory vault
 
-    async function getLiveWeather(city) {
-      const weatherData = await weatherRes.json();
-      globalWeatherData = weatherData; // Save to backpack for later use
-    }
+- The Problem: Clicking the dropdown hours after a search failed to change the hourly row data because the initial API function's internal variable tracker (`weatherData`) vanished from memory after finishing.
+- The Practical Solution: We built a global runtime pointer variable (`let globalWeatherData = null;`) that acts as an in-memory cache backpack [INDEX, INDEX].
+- Code Example:
 
-    daySelector.addEventListener('change', (event) => {
-      // Reaches into the backpack instantly without needing an internet call
-      const hourlyData = globalWeatherData.hourly; 
-    });
+  ```javascript
+  // ✅ FIXED SOLUTION: Persistent Memory Loop
+  let globalWeatherData = null; // Shared memory vault
+
+  async function getLiveWeather(city) {
+    const weatherData = await weatherRes.json();
+    globalWeatherData = weatherData; // Save to backpack for later use
+  }
+
+  daySelector.addEventListener("change", (event) => {
+    // Reaches into the backpack instantly without needing an internet call
+    const hourlyData = globalWeatherData.hourly;
+  });
+  ```
 
 ### 4. Broken API Request URLs (ERR_NAME_NOT_RESOLVED)
-* The Problem: Highlighting the API link text literal paths directly from VS Code text elements broke during testing because it was missing sub-directories (`/v1/search`), parameters, and the dollar sign prefix symbol (`$`) on the template parameters.
-* The Practical Solution: Cleaned up the template backtick paths, normalized casing anomalies (`encodeURIComponent`), and structured endpoints correctly [INDEX].
-* Code Example:
-    //Javascript//
-    // ❌ BROKEN APPROACH
-    const geoUrl = `https://open-meteo.com{encodeuricomponent(city)}...`;
 
-    // ✅ FIXED SOLUTION
-    const geoUrl = `https://open-meteo.com{encodeURIComponent(city)}&count=1&language=en&format=json`;
+- The Problem: Highlighting the API link text literal paths directly from VS Code text elements broke during testing because it was missing sub-directories (`/v1/search`), parameters, and the dollar sign prefix symbol (`$`) on the template parameters.
+- The Practical Solution: Cleaned up the template backtick paths, normalized casing anomalies (`encodeURIComponent`), and structured endpoints correctly [INDEX].
+- Code Example:
+  //Javascript//
+  // ❌ BROKEN APPROACH
+  const geoUrl = `https://open-meteo.com{encodeuricomponent(city)}...`;
+
+  // ✅ FIXED SOLUTION
+  const geoUrl = `https://open-meteo.com{encodeURIComponent(city)}&count=1&language=en&format=json`;
+
 ---
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 # Frontend Mentor - Weather app
 
@@ -188,6 +166,7 @@ Your users should be able to:
 Your task is to build out the project to the designs inside the `/design` folder. You will find both a mobile and a desktop version of the design.
 
 **In your download:**
+
 - Mobile and desktop designs (JPG format)
 - All required assets in the `/assets` folder
 - Variable and static font files (or link to Google Fonts)
@@ -216,7 +195,7 @@ We've included two files to help you if you're using AI coding assistants (like 
 
 **How to use them:** You don't need to do anything! These files are automatically detected by most AI coding tools. The AI will read them and adjust its behavior to be a better learning partner—guiding you toward solutions rather than just giving you the answers.
 
-**Note:** These files are designed to help you *learn*, not to do the work for you. The AI is instructed to ask questions, give hints, and explain concepts rather than writing complete solutions.
+**Note:** These files are designed to help you _learn_, not to do the work for you. The AI is instructed to ask questions, give hints, and explain concepts rather than writing complete solutions.
 
 ## Building your project
 
