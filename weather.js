@@ -1,6 +1,7 @@
 (function () {
   'use strict';
 
+  // 1. 📡 DOM ELEMENT SELECTORS
   const searchForm = document.querySelector('.search-container');
   const searchInput = document.getElementById('citySearch');
   const cityName = document.querySelector('.location-info h2');
@@ -11,15 +12,17 @@
   const hourlyWrapper = document.querySelector('.hourly-list-wrapper');
   const daySelector = document.getElementById('daySelector');
 
+  // Shared application memory backpack
   let globalWeatherData = null;
 
+  // 2. 🌤️ MAP WEATHER CODES TO VISUAL IMAGES
   function getWeatherIcon(code) {
     if (code === 0) return './assets/images/icon-sunny.webp';
     if (code >= 1 && code <= 3) return './assets/images/icon-partly-cloudy.webp';
     if (code >= 45 && code <= 48) return './assets/images/icon-fog.webp';
     if (code >= 51 && code <= 67) return './assets/images/icon-rain.webp';
     if (code >= 71 && code <= 77) return './assets/images/icon-snow.webp';
-    return './assets/images/icon-overcast.webp';
+    return './assets/images/icon-overcast.webp'; 
   }
 
   function formatDayName(dateString) {
@@ -35,27 +38,31 @@
     return `${hours} ${ampm}`;
   }
 
+  // 3. 🚀 MASTER FETCH LOCATION REVOLVER
   async function getLiveWeather(city) {
     try {
-      // 🚀 FIXED: Clean Geocoding Address Structure Route
-      const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=en&format=json`;
+      // ✅ DEFINING GEOURL CLEANLY WITH BACKTICKS
+      const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=en&format=json`
       const geoRes = await fetch(geoUrl);
       const geoData = await geoRes.json();
       
       if (!geoData.results || geoData.results.length === 0) {
-        alert("Location not found! Try another city name.");
+        alert("Location name not found! Please check your spelling.");
         return;
       }
 
-      const { latitude, longitude, name, country } = geoData.results[0];
+      const firstResult = geoData.results[0];
+      const { latitude, longitude, name, country } = firstResult;
 
-      // 🚀 FIXED: Clean Forecast Data Synchronization Track
+      // ✅ DEFINING WEATHERURL CLEANLY WITH BACKTICKS
       const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,precipitation&daily=weather_code,temperature_2m_max,temperature_2m_min&hourly=temperature_2m,weather_code&timezone=auto`;
       const weatherRes = await fetch(weatherUrl);
       const weatherData = await weatherRes.json();
       
+      // Save data bundle safely into global cache backpack memory
       globalWeatherData = weatherData; 
 
+      // Update Card Header UI Text Elements
       if (cityName) cityName.textContent = `${name}, ${country}`;
       if (currentTemp) currentTemp.textContent = `${Math.round(weatherData.current.temperature_2m)}°`;
       if (currentDate) {
@@ -64,14 +71,16 @@
         });
       }
 
+      // Update Core Details Grid Matrix Items (Fixed NodeList Bracket Bug)
       if (detailValues && detailValues.length >= 4) {
         const cur = weatherData.current;
-        detailValues[0].textContent = `${Math.round(cur.apparent_temperature)}°`; // Card 1
-        detailValues[1].textContent = `${Math.round(cur.relative_humidity_2m)}%`;  // Card 2
-        detailValues[2].textContent = `${Math.round(cur.wind_speed_10m)} km/h`;   // Card 3
-        detailValues[3].textContent = `${cur.precipitation} mm`;                // Card 4
+        detailValues[0].textContent = `${Math.round(cur.apparent_temperature)}°`;
+        detailValues[1].textContent = `${Math.round(cur.relative_humidity_2m)}%`;
+        detailValues[2].textContent = `${Math.round(cur.wind_speed_10m)} km/h`;
+        detailValues[3].textContent = `${cur.precipitation} mm`;
       }
 
+      // DYNAMIC REBUILD: 7-Day Extended Forecast Outlook Grid Lists
       if (dailyGrid) {
         dailyGrid.innerHTML = ''; 
         const dailyData = weatherData.daily;
@@ -81,7 +90,7 @@
           dailyHTML += `
             <div class="day-card">
               <span>${formatDayName(dateString)}</span>
-              <img src="${getWeatherIcon(dailyData.weather_code[index])}" alt="Condition">
+              <img src="${getWeatherIcon(dailyData.weather_code[index])}" alt="">
               <div class="temp-range">
                 <span>${Math.round(dailyData.temperature_2m_min[index])}°</span>
                 <span>${Math.round(dailyData.temperature_2m_max[index])}°</span>
@@ -92,23 +101,25 @@
         dailyGrid.insertAdjacentHTML('beforeend', dailyHTML);
       }
 
+      // DYNAMIC REBUILD: Hourly Forecast Timelines
       if (daySelector) daySelector.value = "0"; 
       updateHourlyUI(0);
 
     } catch (err) {
-      console.error("API Error Workflow Stalled:", err);
+      console.error("API Fetch Error:", err);
     }
   }
 
+  // 4. 🎛️ DYNAMIC TIMELINE GENERATION LOGIC ENGINE
   function updateHourlyUI(dayOffset) {
     if (!hourlyWrapper || !globalWeatherData) return;
     
     hourlyWrapper.innerHTML = ''; 
     const hourlyData = globalWeatherData.hourly;
-    let startIdx = dayOffset * 24;
     
+    let startIdx = dayOffset * 24;
     if (dayOffset === 0) {
-      startIdx += new Date().getHours();
+      startIdx += new Date().getHours(); 
     }
 
     let hourlyHTML = '';
@@ -117,7 +128,7 @@
 
       hourlyHTML += `
         <div class="hourly-card">
-          <img src="${getWeatherIcon(hourlyData.weather_code[i])}" alt="Icon">
+          <img src="${getWeatherIcon(hourlyData.weather_code[i])}" alt="">
           <span>${formatHourString(hourlyData.time[i])}</span>
           <span>${Math.round(hourlyData.temperature_2m[i])}°</span>
         </div>
@@ -126,6 +137,7 @@
     hourlyWrapper.insertAdjacentHTML('beforeend', hourlyHTML);
   }
 
+  // 5. 👂 GLOBAL APPLICATION CONTROL ACTION LISTENERS
   if (searchForm && searchInput) {
     searchForm.addEventListener('submit', (event) => {
       event.preventDefault();
@@ -144,5 +156,6 @@
     });
   }
 
+  // Initial automatic background boot default request call
   getLiveWeather('Berlin');
 })();
