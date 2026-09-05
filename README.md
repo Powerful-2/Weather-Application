@@ -1,6 +1,6 @@
 # Mobile Weather Dashboard
 
-## A beautiful, responsive mobile weather application built using professional Figma design specifications and powered by real-time climate data from the Open-Meteo API.
+## Responsive mobile weather application built using professional Figma design specifications and powered by real-time climate data from the Open-Meteo API.
 
 Features Built (Mobile View)
 
