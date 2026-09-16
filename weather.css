@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+@import url('tablets.css');
+@import url('desktop.css');
 
 :root{
     --color-neutral-900: hsl(243, 96%, 9%);
@@ -892,7 +894,7 @@ h1{
     max-width: 343px;
     align-self: center;
     flex: none;
-    order: 3;
+    order: 2;
     flex-grow: 0;
 }
 
